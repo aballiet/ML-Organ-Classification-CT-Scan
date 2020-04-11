@@ -1,4 +1,4 @@
-# Machine Learning applied for Organ Detection and Localization
+# Machine Learning applied to Organ Detection and Localization
 
 ![Kiku](ressources/liver_overlay.png)
 
@@ -11,7 +11,6 @@
 - [RandomForest](#randomforest)
 - [CNN](#cnn)
 - [Conclusion](#conclusion)
-- [Sources](#sources)
 - [License](#license)
 
 ## Background
@@ -19,9 +18,9 @@
 This project aims to :
 * detect 23 human organs from a given tomography
 * create segmentation overlays for each organs
-* :children_crossing: allows me to discover data-processing, ML capabilities and data-science in general
+* introduce me to data-processing, ML and data-science in general :children_crossing: 
 
-I started this project during the Initiation to Ressearch  Project at [INSA Lyon](https://www.insa-lyon.fr/) and I still try to improve it even after being graded :construction_worker::chart_with_upwards_trend:.
+I started this project during the Initiation to Ressearch  Project at [INSA Lyon](https://www.insa-lyon.fr/) and still try to improve it even after being graded :construction_worker::chart_with_upwards_trend:.
 
 ## Dataset
 
@@ -57,10 +56,44 @@ I started working with 33x33 blocks and I ended up with this first Confusion Mat
 ![first-rf-results](ressources/RF_first_results.png)
 
 - total confusion between left/right side for relatively big organs (such as lungs) due to small block size
+- very poor detection for smallest organes (i.e psoas, rectus, abdominis...)
 - quite good result for a first try (I assume)
 
+In order to better understand classification errors, I computed some **spatial probability maps** : given a slice (shape : 512,512) and a class (1 out of the 23), we predict the probability of each block of the slice.
 
-**Walkthrough**
+In the case of 33x33 shaped blocks it gives 256 values which can be interpolated to recreate an image of the same shape as the orginal size. 
+
+We can then plot probability maps as overlays :
+
+![first-rf-results](ressources/classification_mistakes.png)
+
+## CNN
+
+After digging a bit arround RF approach I discovered Neural Networks and more specifically CNN. At the meantime I discovered Google Colab which offers **FREE GPU** and a very intuitive Jupyter Notebook interface, TensorFlow & Keras ready to go !
+
+### Model 1
+
+I first trained a quite simple architecture
+
+![first-cnn-model](ressources/first_model.png)
+
+Then I decided to add an extra Conv2D layer, regularization and dropout to improve it
+
+```python
+model = Sequential([
+    Conv2D(32, (3,3), padding="valid", activation='relu', input_shape=(33, 33, 1), kernel_regularizer=l2(0.001), strides=(2, 2)),
+    Conv2D(64, (3,3) , padding="same", activation="relu", kernel_regularizer=l2(0.001), strides=(2, 2)),
+    Conv2D(128, (3,3) , padding="same", activation="relu", kernel_regularizer=l2(0.001), strides=(2, 2)),
+    Flatten(),
+    Dense(800),
+    Dropout(0.25),
+    Dense(84),
+    Dense(23, activation='softmax'),
+```
+
+Later on I switched to 63,63 shaped blocks to give more context to the CNN.
+
+
 
 
 ## Install
