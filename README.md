@@ -16,7 +16,7 @@
 ## Background
 
 This project aims to :
-* detect 23 human organs from a given tomography
+* detect 23 human organs from a given tomography **without making any asumption on its kind** using a ML algorithm trained **from scratch** (no pre-training)
 * create segmentation overlays for each organs
 * introduce me to data-processing, ML and data-science in general :children_crossing: 
 
@@ -93,13 +93,7 @@ model = Sequential([
 
 Later on I switched to 63,63 shaped blocks to give more context to the CNN.
 
-
-
-
-## Install
-
-## Sources
-
+*To be continued...*
 
 ## License
 <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br />(This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License)</a>.
